@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de Progreso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        /* Navegación */
+        nav {
+            background-color: #2980b9;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+        }
+        nav .left-menu {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        nav .right-menu {
+            display: flex;
+            gap: 15px;
+        }
+        nav .right-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+        nav .right-menu a:hover {
+            background-color: #3498db;
+            border-radius: 5px;
+        }
+        .container {
+            padding: 20px;
+        }
+        .title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table th, table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .filters select, .filters button {
+            padding: 10px;
+            margin-right: 10px;
+        }
+        .filters button {
+            cursor: pointer;
+        }
+        .download-button {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .download-button:hover {
+            background-color: #218838;
+        }
+        /* Estilos del Popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .popup .tabs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .popup .tabs button {
+            padding: 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #f4f4f4;
+        }
+        .popup .tabs button.active {
+            background-color: #2980b9;
+            color: white;
+        }
+        .popup .message {
+            text-align: center;
+        }
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="left-menu">TRISMEGISTRO ESPECIAL</div>
+        <div class="right-menu">
+            <a href="configurar_aula.html">Configurar Aula</a>
+            <a href="horario.html">Horario</a>
+            <a href="asistencia.html">Asistencia</a>
+            <a href="boleta_calificaciones.html">Boleta Calificaciones</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="title">Informe de Progreso</div>
+
+        <div class="filters">
+            <label for="month">Filtrar por mes:</label>
+            <select id="month" onchange="filterBoleta()">
+                <option value="enero">Enero</option>
+                <option value="febrero">Febrero</option>
+            </select>
+            <button onclick="filterBoleta()">Filtrar</button>
+        </div>
+
+        <div id="boletas">
+            <div class="boleta" id="boleta_enero" style="display:none;">
+                <h3>Boleta de Progreso - Enero</h3>
+                <p>Información de calificaciones de enero...</p>
+                <a href="#" class="download-button" download="boleta_enero.pdf">Descargar Boleta Enero</a>
+            </div>
+
+            <div class="boleta" id="boleta_febrero" style="display:none;">
+                <h3>Boleta de Progreso - Febrero</h3>
+                <p>Información de calificaciones de febrero...</p>
+                <a href="#" class="download-button" download="boleta_febrero.pdf">Descargar Boleta Febrero</a>
+            </div>
+        </div>
+
+        <!-- Tabla de estudiantes -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Estudiante</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Catalina Mosquera Gambetta</td>
+                    <td><button onclick="openPopup()">Abrir</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Popup de informe -->
+    <div class="popup-overlay" id="popup-overlay"></div>
+    <div class="popup" id="popup">
+        <div class="tabs">
+            <button id="tab-enero" class="active" onclick="showTab('enero')">Enero</button>
+            <button id="tab-febrero" onclick="showTab('febrero')">Febrero</button>
+        </div>
+        <div class="message">
+            <p><strong>INFORME DE PROGRESO 2025, EL DIRECTOR DE SEDE LO ENVIARA AL CULMINAR EL REGISTRO DE CALIFICACIONES</strong></p>
+        </div>
+    </div>
+
+    <script>
+        function filterBoleta() {
+            const month = document.getElementById('month').value;
+            document.getElementById('boleta_enero').style.display = month === 'enero' ? 'block' : 'none';
+            document.getElementById('boleta_febrero').style.display = month === 'febrero' ? 'block' : 'none';
+        }
+
+        function openPopup() {
+            document.getElementById('popup-overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popup-overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function showTab(month) {
+            document.getElementById('tab-enero').classList.toggle('active', month === 'enero');
+            document.getElementById('tab-febrero').classList.toggle('active', month === 'febrero');
+        }
+
+        document.getElementById('popup-overlay').onclick = closePopup;
+    </script>
+</body>
+</html>

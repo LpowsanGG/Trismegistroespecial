@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistencia - Trismegistro</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/script.js"></script>
+</head>
+<body>
+    <nav>
+        <a href="configurar_aula.html">Configurar Aula</a>
+        <a href="boleta_calificaciones.html">Boleta de Calificaciones</a>
+        <a href="asistencia.html">Asistencia</a>
+        <a href="horario.html">Generar Horario</a>
+        <a href="calificaciones.html">Calificaciones</a>
+    </nav>
+
+    <h2>Asistencia</h2>
+    <div>
+        <button onclick="filtrarAsistencia('enero')">Enero</button>
+        <button onclick="filtrarAsistencia('febrero')">Febrero</button>
+    </div>
+    <table>
+        <tr><th>Estudiante</th><th>Falta</th><th>Tardanza</th><th>Asistencia</th></tr>
+        <tr><td>Catalina Mosquera</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox" checked></td></tr>
+    </table>
+</body>
+</html>
+

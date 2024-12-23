@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurar Horario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #2980b9;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        nav .logo {
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            margin-left: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            background-color: #3498db;
+            border-radius: 5px;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .schedule-table th, .schedule-table td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 8px;
+        }
+
+        .schedule-table th {
+            background-color: #0078D4;
+            color: white;
+        }
+
+        .schedule-table td {
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            margin: 10px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-save {
+            background-color: #4CAF50;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <span class="logo">TRISMEGISTRO ESPECIAL</span>
+    <a href="configurar_aula.html">Configurar Aula</a>
+    <a href="horario.html">Configurar Horario</a>
+    <a href="asistencia.html">Asistencia</a>
+    <a href="boleta_calificaciones.html">Boleta de Calificaciones</a>
+</nav>
+
+<h1>Configurar Horario</h1>
+
+<table class="schedule-table">
+    <thead>
+        <tr>
+            <th>Horario</th>
+            <th>Lunes</th>
+            <th>Martes</th>
+            <th>Miércoles</th>
+            <th>Jueves</th>
+            <th>Viernes</th>
+            <th>Sábado</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td data-time="07:50">07:50 - 09:25</td>
+            <td data-day="lunes" data-time="07:50"></td>
+            <td data-day="martes" data-time="07:50"></td>
+            <td data-day="miércoles" data-time="07:50"></td>
+            <td data-day="jueves" data-time="07:50"></td>
+            <td data-day="viernes" data-time="07:50"></td>
+            <td data-day="sábado" data-time="07:50"></td>
+        </tr>
+        <tr>
+            <td data-time="09:35">09:35 - 11:00</td>
+            <td data-day="lunes" data-time="09:35"></td>
+            <td data-day="martes" data-time="09:35"></td>
+            <td data-day="miércoles" data-time="09:35"></td>
+            <td data-day="jueves" data-time="09:35"></td>
+            <td data-day="viernes" data-time="09:35"></td>
+            <td data-day="sábado" data-time="09:35"></td>
+        </tr>
+        <tr>
+            <td data-time="11:10">11:10 - 12:35</td>
+            <td data-day="lunes" data-time="11:10"></td>
+            <td data-day="martes" data-time="11:10"></td>
+            <td data-day="miércoles" data-time="11:10"></td>
+            <td data-day="jueves" data-time="11:10"></td>
+            <td data-day="viernes" data-time="11:10"></td>
+            <td data-day="sábado" data-time="11:10"></td>
+        </tr>
+        <tr>
+            <td data-time="12:50">12:50 - 14:20</td>
+            <td data-day="lunes" data-time="12:50"></td>
+            <td data-day="martes" data-time="12:50"></td>
+            <td data-day="miércoles" data-time="12:50"></td>
+            <td data-day="jueves" data-time="12:50"></td>
+            <td data-day="viernes" data-time="12:50"></td>
+            <td data-day="sábado" data-time="12:50"></td>
+        </tr>
+        <tr>
+            <td data-time="15:20">15:20 - 16:05</td>
+            <td data-day="lunes" data-time="15:20"></td>
+            <td data-day="martes" data-time="15:20"></td>
+            <td data-day="miércoles" data-time="15:20"></td>
+            <td data-day="jueves" data-time="15:20"></td>
+            <td data-day="viernes" data-time="15:20"></td>
+            <td data-day="sábado" data-time="15:20"></td>
+        </tr>
+        <!-- Add additional rows as needed -->
+    </tbody>
+</table>
+
+<button class="btn btn-save">Guardar Cambios</button>
+
+<div class="popup" id="popup">
+    <h3>Configurar Celda</h3>
+    <label for="docente">Docente:</label>
+    <input type="text" id="docente" placeholder="Nombre del docente">
+    <br><br>
+    <label for="curso">Curso:</label>
+    <input type="text" id="curso" placeholder="Nombre del curso">
+    <br><br>
+    <button id="save-cell">Guardar</button>
+    <button id="close-popup">Cancelar</button>
+</div>
+<div class="overlay" id="overlay"></div>
+
+<script>
+    const cells = document.querySelectorAll('.schedule-table td');
+    const popup = document.getElementById('popup');
+    const overlay = document.getElementById('overlay');
+    const docenteInput = document.getElementById('docente');
+    const cursoInput = document.getElementById('curso');
+    const saveCellButton = document.getElementById('save-cell');
+    const closePopupButton = document.getElementById('close-popup');
+    let currentCell = null;
+
+    cells.forEach(cell => {
+        cell.addEventListener('click', () => {
+            if (cell.hasAttribute('data-time') || cell.hasAttribute('data-day')) {
+                currentCell = cell;
+                popup.style.display = 'block';
+                overlay.style.display = 'block';
+            }
+        });
+    });
+
+    saveCellButton.addEventListener('click', () => {
+        if (currentCell) {
+            currentCell.textContent = `${docenteInput.value} - ${cursoInput.value}`;
+        }
+        popup.style.display = 'none';
+        overlay.style.display = 'none';
+        docenteInput.value = '';
+        cursoInput.value = '';
+    });
+
+    closePopupButton.addEventListener('click', () => {
+        popup.style.display = 'none';
+        overlay.style.display = 'none';
+    });
+
+    document.querySelector('.btn-save').addEventListener('click', () => {
+        alert('Cambios guardados con éxito');
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Calificaciones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 3px solid #2980b9;
+        }
+        header h1 {
+            margin: 0;
+            padding: 0;
+        }
+        /* Navegación */
+        nav {
+            background-color: #2980b9;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+        nav a:hover {
+            background-color: #3498db;
+            border-radius: 5px;
+        }
+        .container {
+            padding: 20px;
+        }
+        /* Tabla y diseño */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table th, table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        .filters select {
+            padding: 10px;
+            margin-right: 10px;
+        }
+        .filters button {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .promedio {
+            font-weight: bold;
+            background-color: #f1f1f1;
+            padding: 5px;
+        }
+        .escala {
+            font-weight: bold;
+        }
+        .message {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .escala-resultado {
+            background-color: #2980b9;
+            color: white;
+            padding: 5px;
+            margin-top: 5px;
+        }
+        .download-btn {
+            padding: 10px 20px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .download-btn:hover {
+            background-color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        TRISMEGISTRO ESPECIAL
+    </header>
+
+    <nav>
+        <a href="configurar_aula.html">Configurar Aula</a>
+        <a href="horario.html">Horario</a>
+        <a href="asistencia.html">Asistencia</a>
+        <a href="boleta_calificaciones.html">Boleta Calificaciones</a>
+    </nav>
+
+    <div class="container">
+        <!-- Filtro por mes -->
+        <div class="filters">
+            <label for="month">Filtrar por mes:</label>
+            <select id="month" onchange="filterData()">
+                <option value="enero">Enero</option>
+                <option value="febrero">Febrero</option>
+            </select>
+        </div>
+
+        <!-- Tabla de calificaciones -->
+        <h3>Calificaciones de Estudiantes</h3>
+        <table id="calificaciones">
+            <thead>
+                <tr>
+                    <th>Estudiante</th>
+                    <th>Comunicación</th>
+                    <th>Ciencias Sociales</th>
+                    <th>Ciencia y Tecnología</th>
+                    <th>Matemática</th>
+                    <th>Promedio</th>
+                    <th>Escala</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="catalina">
+                    <td>Catalina Mosquera Gambetta</td>
+                    <td><input type="text" class="calificacion" data-subject="comunicacion" oninput="calculateAverage()"></td>
+                    <td><input type="text" class="calificacion" data-subject="ciencias_sociales" oninput="calculateAverage()"></td>
+                    <td><input type="text" class="calificacion" data-subject="ciencia_tecnologia" oninput="calculateAverage()"></td>
+                    <td><input type="text" class="calificacion" data-subject="matematica" oninput="calculateAverage()"></td>
+                    <td class="promedio">-</td>
+                    <td class="escala">-</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="message" id="mensaje"></div>
+
+        <button class="download-btn" onclick="downloadExcel()">Descargar en Excel</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SheetJS/0.18.3/xlsx.full.min.js"></script>
+
+    <script>
+        // Filtrar los datos por mes
+        function filterData() {
+            const month = document.getElementById('month').value;
+            console.log(`Filtrar por: ${month}`);
+        }
+
+        // Calcular el promedio de las calificaciones
+        function calculateAverage() {
+            const estudiante = document.getElementById('catalina');
+            const calificaciones = estudiante.querySelectorAll('.calificacion');
+            let total = 0;
+            let count = 0;
+
+            calificaciones.forEach(calificacion => {
+                const valor = calificacion.value.toUpperCase().trim();
+                if (valor) {
+                    total += getNumericGrade(valor);
+                    count++;
+                }
+            });
+
+            const promedio = count > 0 ? (total / count).toFixed(2) : 0;
+            const escala = calculateScale(promedio);
+
+            estudiante.querySelector('.promedio').textContent = promedio;
+            estudiante.querySelector('.escala').textContent = escala;
+        }
+
+        // Convertir calificación en letra a valor numérico
+        function getNumericGrade(grade) {
+            switch (grade) {
+                case 'AD': return 3.5;
+                case 'A': return 6.0;
+                case 'B': return 8.0;
+                case 'C': return 10.0;
+                default: return 0;
+            }
+        }
+
+        // Calcular la escala según la calificación
+        function calculateScale(promedio) {
+            if (promedio < 4) {
+                return "AD";
+            } else if (promedio >= 4 && promedio < 7) {
+                return "A";
+            } else if (promedio >= 7 && promedio < 9) {
+                return "B";
+            } else {
+                return "C";
+            }
+        }
+
+        // Descargar en formato Excel
+        function downloadExcel() {
+            const ws = XLSX.utils.table_to_sheet(document.getElementById('calificaciones'));
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Calificaciones");
+
+            // Descargar el archivo
+            XLSX.writeFile(wb, "calificaciones_estudiantes.xlsx");
+        }
+    </script>
+</body>
+</html>
+
+
